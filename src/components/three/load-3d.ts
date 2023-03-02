@@ -39,14 +39,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const anchor = mindarThree.addAnchor(0);
 
     // loading the 3d model
-    const gltf = await loadGLTF("../../public/assets/models/musicband-raccoon/scene.gltf");
-    //scaling the model and adjusting the positions
-    gltf.scene.scale.set(0.1, 0.1, 0.1);
-    gltf.scene.position.set(0, -0.4, 0);
-    //now adding this scene to our anchor
-    anchor.group.add(gltf.scene);
+    const racoon = await loadGLTF("../../public/assets/models/musicband-raccoon/scene.gltf");
 
-    anchor.group.add(plane); // this is a Three Group element
+    //scaling the model and adjusting the positions
+    //@ts-expect-error
+    racoon.scene.scale.set(0.1, 0.1, 0.1);
+    //@ts-expect-error
+    racoon.scene.position.set(0, -0.4, 0);
+    //now adding this scene to our anchor
+    const racoonAnchor = mindarThree.addAnchor(0);
+    //@ts-expect-error
+    racoonAnchor.group.add(racoon.scene);
+
+    //you can also load multiple models
+    const bear = await loadGLTF("../../public/assets/models/musicband-bear/scene.gltf");
+    //@ts-expect-error
+    bear.scene.scale.set(0.1, 0.1, 0.1);
+    //@ts-expect-error
+    bear.scene.position.set(0, -0.4, 0);
+    const bearAnchor = mindarThree.addAnchor(1);
+    //@ts-expect-error
+    bearAnchor.group.add(bear.scene);
+
+
+    // anchor.group.add(plane); // this is a Three Group element
 
     await mindarThree.start();
     renderer.setAnimationLoop(() => {
