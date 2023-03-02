@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
       imageTargetSrc: "../../public/assets/targets/musicband.mind",
+      // this one below is for multiple tracking, dont set it to a ni above what's necessary 
+      maxTrackables: 2,
     });
 
     // getting the 3d stuff from the mindar obj
@@ -62,10 +64,29 @@ document.addEventListener("DOMContentLoaded", () => {
     bearAnchor.group.add(bear.scene);
 
 
+
+    //this part is for playing animations
+    //@ts-expect-error
+    const mixer = new THREE.AnimationMixer(racoon.scene);
+    //@ts-expect-error
+    const action = mixer.clipAction(racoon.animations[0]);
+    action.play();
+
+    //getting the clock from 3js to help with the animations time elapsed
+    const clock = new THREE.Clock();
+
+
     // anchor.group.add(plane); // this is a Three Group element
 
     await mindarThree.start();
     renderer.setAnimationLoop(() => {
+      //now play the animations on every frame
+      const delta = clock.getDelta();
+
+      // here we rotate the model
+      //@ts-expect-error
+      racoon.scene.rotation.set(0, racoon.scene.rotation.y + delta, 0)
+      mixer.update(delta);
       renderer.render(scene, camera);
     });
   };
