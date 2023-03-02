@@ -1,4 +1,4 @@
-import { mockWithImage } from "../../../Hooks/WebCamMocks";
+import { mockWithImage } from "../../../helpers/WebCamMocks";
 //@ts-expect-error
 
 const THREE = window.MINDAR.IMAGE.THREE;

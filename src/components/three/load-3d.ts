@@ -1,16 +1,10 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { loadAudio, loadGLTF } from '../../../helpers/loaders';
+
 //@ts-expect-error
 
 const THREE = window.MINDAR.IMAGE.THREE;
-//helper function to load 3dmodels
-const loadGLTF = (path: string) => {
-  return new Promise((resolve) => {
-    const loader = new GLTFLoader()
-    loader.load(path, (gltf) => {
-      resolve(gltf);
-    });
-  });
-}
+
 document.addEventListener("DOMContentLoaded", () => {
   const start = async () => {
     //@ts-expect-error
@@ -63,8 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //@ts-expect-error
     bearAnchor.group.add(bear.scene);
 
-
-
     //this part is for playing animations
     //@ts-expect-error
     const mixer = new THREE.AnimationMixer(racoon.scene);
@@ -76,7 +68,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const clock = new THREE.Clock();
 
 
-    // anchor.group.add(plane); // this is a Three Group element
+    //this is for loading audio once the object is detected
+    const audioClip = await loadAudio("../../public/assets/sounds/musicband-background.mp3");
+    const listener = new THREE.AudioListener();
+    const audio = new THREE.PositionalAudio(listener);
+    racoonAnchor.group.add(audio);
+    camera.add(listener); //making the sound seem loud as how the camera is close to the scen
+
+    audio.setRefDistance(100);  // telling threejs how far the sound should be heard
+    audio.setBuffer(audioClip); // setting the buffer to the audio
+    audio.setLoop(true); // looping the sound
+    racoonAnchor.onTargetFound = () => {
+      audio.play();
+    }
+
+    racoonAnchor.onTargetLost = () => {
+      audio.pause();
+    }
 
     await mindarThree.start();
     renderer.setAnimationLoop(() => {
