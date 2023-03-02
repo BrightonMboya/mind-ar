@@ -18,3 +18,14 @@ export const loadAudio = (path: string) => {
         });
     });
 }
+
+export const loadVideo = (path: string) => {
+    return new Promise((resolve) => {
+        const videoLoader = document.createElement("video");
+        videoLoader.addEventListener("loadeddata", () => {
+            resolve(videoLoader);
+        }
+        );
+        videoLoader.src = path;
+    });
+}
