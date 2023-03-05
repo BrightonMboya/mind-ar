@@ -29,3 +29,29 @@ export const loadVideo = (path: string) => {
         videoLoader.src = path;
     });
 }
+
+export const createYoutube = () => {
+    return new Promise((resolve, reject) => {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+        const onYouTubeIframeAPIReady = () => {
+            //@ts-ignore
+            const player = new YT.Player('player', {
+                videoId: 'M7lc1UVf-VE',
+                events: {
+                    onReady: () => {
+                        resolve(player);
+
+                    }
+                }
+            });
+            //@ts-ignore
+            window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+        }
+
+    })
+}

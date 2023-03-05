@@ -62,9 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // start();
-    const button = document.createElement("button");
-    button.innerText = "Start";
-    button.addEventListener("click", () => start());
-    document.body.appendChild(button);
+    start();
+    // const button = document.createElement("button");
+    // button.innerText = "Start";
+    // button.addEventListener("click", () => start());
+    // document.body.appendChild(button);
 });
